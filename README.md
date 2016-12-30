@@ -1,3 +1,0 @@
-# spaceword
-
-test
