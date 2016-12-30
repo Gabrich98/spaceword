@@ -12,20 +12,43 @@ using namespace std;
 
 void Juego::game_over(){
 
+
+    sf::Text t;
+
+    t.setFont(fuente);
+    t.setPosition(500,700);
+    t.setCharacterSize(50);
+    t.setString("RESTART --PRECIONE SPACE--");
+
     sf::Texture bg_t;
     bg_t.loadFromFile("game_over.png");
-
-   sf::Sprite bg;
+    sf::Sprite bg;
     bg.setPosition(0,0);
     bg.setTexture(bg_t);
     bg.setScale(0.8, 0.8);
-    window.clear();
-    for(int i=1000;i<0;i--){
-    window.draw(bg);
-    window.display();
-    }
+    while(window.isOpen()){
 
-}
+        sf::Event event;
+        while (window.pollEvent(event)){
+
+            if(event.type==sf::Event::KeyPressed){
+                if(event.key.code == sf::Keyboard::F1)
+                {
+                   return loop();
+
+                }
+            }
+            if (event.type == sf::Event::KeyReleased){
+                if (event.key.code == sf::Keyboard::F1){}
+            }
+
+        }
+        window.draw(bg);
+        window.draw(t);
+        window.display();
+
+        }
+    }
 
 template <typename T>
 std::string to_string(T pNumber)
