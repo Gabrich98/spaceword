@@ -13,11 +13,10 @@ class AST : public Entidad
         void pintar(sf::RenderWindow&);
         void accion(Juego&);
         sf::FloatRect devolver_cuadrado();
+
     protected:
 
-
     private:
-
         int vel;
 };
 

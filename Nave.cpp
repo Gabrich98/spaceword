@@ -1,42 +1,65 @@
 #include "Nave.h"
 #include "Juego.h"
 #include "Bala.h"
+#include <string>
+#include <sstream>
 
-Nave::Nave() : Entidad("nave_mov.png", 600, 600)
+
+Nave::Nave() : Entidad("nave_mov.png","propulsor.psd","","", 600, 600)
 {
     vidas=3;
     salud=100;
     disparando = false;
     contador = 10;
     actual = NoMov;
-    //ctor
+    fuente.loadFromFile("letra.ttf");
+    puntaje=0;
+    subir=false;
+    //Constructor
 }
-void Nave::descontar_vidas(){
+
+template <typename T>
+std::string to_string(T pNumber)
+{
+ std::ostringstream oOStrStream;
+ oOStrStream << pNumber;
+ return oOStrStream.str();
+}
+
+
+
+void Nave::actualiza_puntaje()
+{
+    puntaje=puntaje+1;
+}
+
+
+void Nave::descontar_vidas()
+{
     vidas--;
 }
 int Nave::mostrar_vidas(){
+
         return vidas;
 }
-void Nave::descontar_salud(){
+void Nave::descontar_salud()
+{
     salud=salud-20;
 }
 
-int Nave::mostrar_salud(){
+int Nave::mostrar_salud()
+{
     return salud;
 }
 
 
-/*sf::FloatRect Nave::devolver_cuadrado_nave(){
-    return sprite.getGlobalBounds();
 
-}*/
 
-//Aca se programa el evento de los movimientos de la nave
 
 
 void Nave::procesar_evento(sf::Event event)
 {
-    if (event.type == sf::Event::KeyPressed)
+    if (event.type == sf:: Event::KeyPressed)
     {
         switch (event.key.code)
         {
@@ -48,6 +71,7 @@ void Nave::procesar_evento(sf::Event event)
             break;
         case sf::Keyboard::Up:
             actual = Arriba;
+            subir=true;
             break;
         case sf::Keyboard::Down:
             actual = Abajo;
@@ -62,15 +86,21 @@ void Nave::procesar_evento(sf::Event event)
         {
         case sf::Keyboard::Left:
             if (actual == Izquierda) actual = NoMov;
+            if(subir==true)subir=false;
             break;
         case sf::Keyboard::Right:
             if (actual == Derecha) actual = NoMov;
+            if(subir==true)subir=false;
             break;
         case sf::Keyboard::Up:
-            if (actual == Arriba) actual = NoMov;
+            if (actual == Arriba){
+                    actual = NoMov;
+                    subir=false;
+            }
             break;
         case sf::Keyboard::Down:
             if (actual == Abajo) actual = NoMov;
+            if(subir==true)subir=false;
             break;
         default:
             break;
@@ -97,7 +127,10 @@ void Nave::procesar_evento(sf::Event event)
 
 void Nave::accion(Juego& j) {
         //comparar nave con asteroides
+
         AST* a = j.colision_con_nave(sprite.getGlobalBounds());
+
+
 
         if(a != NULL){
             a->matar();
@@ -108,29 +141,40 @@ void Nave::accion(Juego& j) {
                 salud=100;
 
             }
-
         }
+
+
+        sprite.setScale(1.1,1.1);
+
+        punt.setCharacterSize(25);
+        punt.setFont(fuente);
+        punt.setColor(sf::Color::Yellow);
+        punt.setPosition(sprite.getPosition().x+70,sprite.getPosition().y+50);
+        punt.setString(to_string(puntaje));
+
+        sprite1.setPosition(sprite.getPosition().x+75,sprite.getPosition().y+80);
+
 
 
         if(disparando){
             if (contador <= 0) {
-                j.disparar(sprite.getPosition() + sf::Vector2f(text.getSize().x / 2-4, -50));
-                contador = 10;
+                j.disparar(sprite.getPosition() + sf::Vector2f(o1.getSize().x / 2-23, -50));
+                contador = 5;
             }
             contador--;
         }
         switch (actual) {
             case Izquierda:
-               if(sprite.getPosition().x>=3) sprite.move(-10, 0);
+               if(sprite.getPosition().x>=3) sprite.move(-12, 0);
             break;
             case Derecha:
-                if(sprite.getPosition().x<=1228)sprite.move(10, 0);
+                if(sprite.getPosition().x<=1228)sprite.move(12, 0);
             break;
             case Arriba:
-                if(sprite.getPosition().y>=3)sprite.move(0, -10);
+                if(sprite.getPosition().y>=3)sprite.move(0, -5);
             break;
             case Abajo:
-                if(sprite.getPosition().y<=650)sprite.move(0, 10);
+                if(sprite.getPosition().y<=650)sprite.move(0, 8);
             break;
             case NoMov:
 
@@ -142,5 +186,7 @@ void Nave::accion(Juego& j) {
 void Nave::pintar(sf::RenderWindow& w) {
 
     //Este es para pintar la nave
+    if(subir==true)w.draw(sprite1);
     w.draw(sprite);
+    w.draw(punt);
 }

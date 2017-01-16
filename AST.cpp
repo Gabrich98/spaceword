@@ -1,19 +1,21 @@
 #include "AST.h"
 
 
-AST::AST(/*int tam*/) : Entidad("ast.png", rand()%1366, rand()%50)
+AST::AST(/*int tam*/) : Entidad("a_1.png","","","", rand()%1366, rand()%50)
 {
-    vel=4 + rand()%4;
-//constructor de asteroide
+    sprite.setRotation(180);
+    sprite.setScale(0.6,0.6);
+    vel=3 + rand()%4;
+    //Constructor
 }
 
-void AST::procesar_evento(sf::Event){
-
-
+void AST::procesar_evento(sf::Event)
+{
 }
 
-sf::FloatRect AST::devolver_cuadrado(){
-    return sprite.getGlobalBounds();
+sf::FloatRect AST::devolver_cuadrado()
+{
+        return sprite.getGlobalBounds();
 }
 
 void AST::accion(Juego&)

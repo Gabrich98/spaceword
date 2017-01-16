@@ -13,11 +13,8 @@ class Bala : public Entidad
         void accion(Juego&);
         void pintar(sf::RenderWindow&);
 
-
     protected:
-        //Segundos que le quedan a la bala antes de ser destrihida
-       // float seg_v;
-       // bool b_viva;
+
     private:
 };
 

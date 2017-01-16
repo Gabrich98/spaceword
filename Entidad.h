@@ -11,7 +11,7 @@ class Juego;
 class Entidad
 {
     public:
-        Entidad(string nombre, int x, int y);
+        Entidad(string obj1, string obj2, string obj3, string obj4, int x, int y);
         virtual void procesar_evento(sf::Event) = 0;
         virtual void accion(Juego&) = 0;
         virtual void pintar(sf::RenderWindow&) = 0;
@@ -19,8 +19,15 @@ class Entidad
         void matar();
 
     protected:
-        sf::Texture text;
-        sf::Sprite  sprite;
+        sf::Texture o1;
+        sf::Texture o2;
+        sf::Texture o3;
+        sf::Texture o4;
+
+        sf::Sprite sprite;
+        sf::Sprite sprite1;
+        sf::Sprite sprite2;
+        sf::Sprite sprite3;
 
     private:
         bool esta_vivo;

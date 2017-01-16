@@ -2,9 +2,11 @@
 #define NAVE_H
 
 #include <Entidad.h>
+
 class Juego;
 
-enum Movimiento {
+enum Movimiento
+{
         Izquierda,
         Derecha,
         Arriba,
@@ -23,13 +25,19 @@ class Nave : public Entidad
         int mostrar_vidas();
         void descontar_salud();
         int mostrar_salud();
+        void actualiza_puntaje();
+        int GetPunt(){return puntaje;};
 
-        //sf::FloatRect devolver_cuadrado_nave();
     protected:
-    int contador;
-    int vidas;
-    int salud;
+        int contador;
+        long puntaje;
+        int vidas;
+        int salud;
+
     private:
+        bool subir;
+        sf::Text punt;
+        sf::Font fuente;
         bool disparando;
         Movimiento actual;
 };
